@@ -1,0 +1,139 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Quarterly IT-risk evidence pack: AWS Backup success, EC2 CPU and RDS utilisation
+  for a fiscal quarter, written to S3 and announced over SNS.
+
+Parameters:
+  Regions:
+    Type: String
+    Default: eu-west-1
+    Description: Comma-separated regions to report on.
+  FyStartMonth:
+    Type: Number
+    Default: 7
+    MinValue: 1
+    MaxValue: 12
+    Description: First month of the fiscal year (7 = July, e.g. Kenya).
+  UtcOffsetHours:
+    Type: Number
+    Default: 3
+    Description: Report timezone offset used for quarter boundaries (3 = EAT).
+  NotificationEmail:
+    Type: String
+    Default: ""
+    Description: Optional email to subscribe (e.g. the IT risk manager).
+  RetentionDays:
+    Type: Number
+    Default: 2555
+    Description: How long to keep evidence packs (2555 days = ~7 years).
+
+Conditions:
+  HasEmail: !Not [!Equals [!Ref NotificationEmail, ""]]
+
+Resources:
+  ReportBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration: { Status: Enabled }
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: { SSEAlgorithm: AES256 }
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules: [{ ObjectOwnership: BucketOwnerEnforced }]
+      LifecycleConfiguration:
+        Rules:
+          - Id: evidence-retention
+            Status: Enabled
+            Transitions: [{ StorageClass: GLACIER_IR, TransitionInDays: 90 }]
+            ExpirationInDays: !Ref RetentionDays
+            NoncurrentVersionExpiration: { NoncurrentDays: 30 }
+
+  ReportBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ReportBucket
+      PolicyDocument:
+        Statement:
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: "*"
+            Action: s3:*
+            Resource: [!GetAtt ReportBucket.Arn, !Sub "${ReportBucket.Arn}/*"]
+            Condition: { Bool: { aws:SecureTransport: "false" } }
+
+  ReportTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      KmsMasterKeyId: alias/aws/sns
+
+  ReportSubscription:
+    Type: AWS::SNS::Subscription
+    Condition: HasEmail
+    Properties:
+      TopicArn: !Ref ReportTopic
+      Protocol: email
+      Endpoint: !Ref NotificationEmail
+
+  ReportFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: report.app.handler
+      Runtime: python3.12
+      Architectures: [arm64]
+      MemorySize: 512
+      Timeout: 900
+      Environment:
+        Variables:
+          REPORT_BUCKET: !Ref ReportBucket
+          REGIONS: !Ref Regions
+          FY_START_MONTH: !Ref FyStartMonth
+          REPORT_UTC_OFFSET_HOURS: !Ref UtcOffsetHours
+          SNS_TOPIC_ARN: !Ref ReportTopic
+      Policies:
+        - Statement:
+            - Sid: ReadOnlyEvidence
+              Effect: Allow
+              Action:
+                - backup:ListBackupJobs
+                - backup:ListRestoreJobs
+                - ec2:DescribeInstances
+                - rds:DescribeDBInstances
+                - cloudwatch:GetMetricData
+              Resource: "*"
+            - Sid: WriteEvidence
+              Effect: Allow
+              Action: s3:PutObject
+              Resource: !Sub "${ReportBucket.Arn}/*"
+            - Sid: Notify
+              Effect: Allow
+              Action: sns:Publish
+              Resource: !Ref ReportTopic
+      Events:
+        QuarterlyRun:
+          Type: ScheduleV2
+          Properties:
+            # 06:00 EAT on the 5th day of Jan/Apr/Jul/Oct: gives late backup jobs time to finish.
+            ScheduleExpression: cron(0 6 5 1,4,7,10 ? *)
+            ScheduleExpressionTimezone: Africa/Nairobi
+            RetryPolicy: { MaximumRetryAttempts: 2 }
+
+  ReportFunctionLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${ReportFunction}"
+      RetentionInDays: 365
+
+Outputs:
+  ReportBucketName:
+    Value: !Ref ReportBucket
+  FunctionName:
+    Value: !Ref ReportFunction
+  TopicArn:
+    Value: !Ref ReportTopic

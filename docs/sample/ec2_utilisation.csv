@@ -1,0 +1,9 @@
+region,instance_id,name,instance_type,platform,state,cpu_hours_observed,cpu_avg_pct,cpu_p95_pct,cpu_max_pct
+eu-west-1,i-0abc0000,web-01,t3.large,Linux/UNIX,running,2208,34.73,59.8,86.54
+eu-west-1,i-0abc0001,web-02,t3.large,Linux/UNIX,running,2208,33.2,58.18,81.97
+eu-west-1,i-0abc0002,api-01,t3.large,Linux/UNIX,running,2208,62.12,93.23,100.0
+eu-west-1,i-0abc0003,batch-01,t3.large,Linux/UNIX,running,2208,68.96,100.0,100.0
+eu-west-1,i-0abc0004,bastion,t3.large,Linux/UNIX,running,2208,2.0,3.62,4.95
+eu-west-1,i-0abc0005,reporting,t3.large,Linux/UNIX,running,2208,4.02,7.34,10.7
+eu-west-1,i-0abc0006,wazuh-manager,t3.large,Linux/UNIX,running,2208,54.9,80.11,100.0
+eu-west-1,i-0abc0007,ci-runner,t3.large,Linux/UNIX,running,2208,24.73,71.71,100.0

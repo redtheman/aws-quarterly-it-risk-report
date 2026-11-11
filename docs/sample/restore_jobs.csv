@@ -1,0 +1,2 @@
+region,restore_job_id,resource_type,recovery_point_arn,status,status_message,created,completed
+eu-west-1,r-1,RDS,rp,COMPLETED,,2026-08-15,2026-08-15

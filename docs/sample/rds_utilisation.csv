@@ -1,0 +1,3 @@
+region,db_instance,engine,instance_class,multi_az,status,cpu_avg_pct,cpu_p95_pct,cpu_max_pct,connections_avg,connections_max,min_freeable_memory_mib,allocated_storage_gib,peak_storage_used_pct,backup_retention_days,storage_encrypted
+eu-west-1,orders-prod,postgres 16.4,db.r6g.large,True,available,41.2,77.9,96.0,84.0,212.0,1840.0,500,83.4,14,True
+eu-west-1,cms-mariadb,mariadb 10.11,db.t4g.medium,False,available,12.5,30.1,64.0,9.0,41.0,610.0,100,38.0,3,True

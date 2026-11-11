@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "quarter_label": "FY2026/27 Q1",
+    "account_id": "111122223333",
+    "regions": [
+      "eu-west-1"
+    ],
+    "period_start": "2026-07-01T00:00:00+03:00",
+    "period_end": "2026-10-01T00:00:00+03:00",
+    "generated_at": "2026-10-05T03:00:12+00:00"
+  },
+  "backup_summary": {
+    "finished_jobs": 540,
+    "completed_jobs": 529,
+    "unsuccessful_jobs": 11,
+    "success_rate_pct": 97.96,
+    "by_resource_type": {
+      "EBS": {
+        "total": 120,
+        "completed": 117,
+        "success_rate_pct": 97.5
+      },
+      "EC2": {
+        "total": 119,
+        "completed": 117,
+        "success_rate_pct": 98.32
+      },
+      "EFS": {
+        "total": 96,
+        "completed": 95,
+        "success_rate_pct": 98.96
+      },
+      "RDS": {
+        "total": 205,
+        "completed": 200,
+        "success_rate_pct": 97.56
+      }
+    }
+  },
+  "findings": [
+    {
+      "severity": "High",
+      "area": "Backup",
+      "resource": "All",
+      "detail": "Backup success rate 97.96% is below the 99.0% target (11 unsuccessful jobs)."
+    },
+    {
+      "severity": "High",
+      "area": "RDS",
+      "resource": "cms-mariadb",
+      "detail": "Automated backup retention 3 days (< 7)."
+    },
+    {
+      "severity": "High",
+      "area": "RDS",
+      "resource": "orders-prod",
+      "detail": "Peak storage use 83.4% of allocated."
+    },
+    {
+      "severity": "Medium",
+      "area": "EC2",
+      "resource": "i-0abc0002 (api-01)",
+      "detail": "CPU p95 93.23% (capacity risk)."
+    },
+    {
+      "severity": "Medium",
+      "area": "EC2",
+      "resource": "i-0abc0003 (batch-01)",
+      "detail": "CPU p95 100.0% (capacity risk)."
+    },
+    {
+      "severity": "Medium",
+      "area": "EC2",
+      "resource": "i-0abc0006 (wazuh-manager)",
+      "detail": "CPU p95 80.11% (capacity risk)."
+    },
+    {
+      "severity": "Low",
+      "area": "EC2",
+      "resource": "i-0abc0004 (bastion)",
+      "detail": "CPU average 2.0%: candidate for rightsizing."
+    },
+    {
+      "severity": "Low",
+      "area": "EC2",
+      "resource": "i-0abc0005 (reporting)",
+      "detail": "CPU average 4.02%: candidate for rightsizing."
+    }
+  ]
+}

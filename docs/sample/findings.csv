@@ -1,0 +1,9 @@
+severity,area,resource,detail
+High,Backup,All,Backup success rate 97.96% is below the 99.0% target (11 unsuccessful jobs).
+High,RDS,cms-mariadb,Automated backup retention 3 days (< 7).
+High,RDS,orders-prod,Peak storage use 83.4% of allocated.
+Medium,EC2,i-0abc0002 (api-01),CPU p95 93.23% (capacity risk).
+Medium,EC2,i-0abc0003 (batch-01),CPU p95 100.0% (capacity risk).
+Medium,EC2,i-0abc0006 (wazuh-manager),CPU p95 80.11% (capacity risk).
+Low,EC2,i-0abc0004 (bastion),CPU average 2.0%: candidate for rightsizing.
+Low,EC2,i-0abc0005 (reporting),CPU average 4.02%: candidate for rightsizing.

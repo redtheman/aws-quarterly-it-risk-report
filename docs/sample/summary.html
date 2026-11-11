@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>IT Risk Evidence Pack: FY2026/27 Q1</title>
+<style>
+ body{font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#1f2937;max-width:1100px;margin:32px auto;padding:0 16px}
+ h1{margin:0 0 4px} h2{margin-top:32px;border-bottom:2px solid #e5e7eb;padding-bottom:4px}
+ .muted{color:#6b7280} .tiles{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}
+ .tile{border:1px solid #e5e7eb;border-radius:8px;padding:12px 16px;min-width:150px}
+ .tile b{display:block;font-size:24px}
+ table{border-collapse:collapse;width:100%;margin:8px 0;font-size:13px}
+ th,td{border:1px solid #e5e7eb;padding:6px 8px;text-align:left} th{background:#f9fafb}
+ .High{color:#b91c1c;font-weight:600} .Medium{color:#b45309;font-weight:600} .Low{color:#1d4ed8}
+</style></head><body>
+<h1>IT Risk Evidence Pack: FY2026/27 Q1</h1>
+<p class="muted">Account 111122223333 · Regions eu-west-1 ·
+Period 2026-07-01T00:00:00+03:00 to 2026-10-01T00:00:00+03:00 (end exclusive) ·
+Generated 2026-10-05T03:00:12+00:00</p>
+
+<div class="tiles">
+ <div class="tile">Backup success<b>97.96%</b>529/540 jobs</div>
+ <div class="tile">Restore tests<b>1</b>completed</div>
+ <div class="tile">EC2 instances<b>8</b>in scope</div>
+ <div class="tile">RDS instances<b>2</b>in scope</div>
+ <div class="tile">Findings<b>8</b>3 high · 3 med · 2 low</div>
+</div>
+
+<h2>Findings</h2>
+<p><span class='High'>High</span> · Backup · <code>All</code>: Backup success rate 97.96% is below the 99.0% target (11 unsuccessful jobs).</p><p><span class='High'>High</span> · RDS · <code>cms-mariadb</code>: Automated backup retention 3 days (&lt; 7).</p><p><span class='High'>High</span> · RDS · <code>orders-prod</code>: Peak storage use 83.4% of allocated.</p><p><span class='Medium'>Medium</span> · EC2 · <code>i-0abc0002 (api-01)</code>: CPU p95 93.23% (capacity risk).</p><p><span class='Medium'>Medium</span> · EC2 · <code>i-0abc0003 (batch-01)</code>: CPU p95 100.0% (capacity risk).</p><p><span class='Medium'>Medium</span> · EC2 · <code>i-0abc0006 (wazuh-manager)</code>: CPU p95 80.11% (capacity risk).</p><p><span class='Low'>Low</span> · EC2 · <code>i-0abc0004 (bastion)</code>: CPU average 2.0%: candidate for rightsizing.</p><p><span class='Low'>Low</span> · EC2 · <code>i-0abc0005 (reporting)</code>: CPU average 4.02%: candidate for rightsizing.</p>
+
+<h2>1. Backup success</h2>
+<table><thead><tr><th>Resource type</th><th>Finished jobs</th><th>Completed</th><th>Success %</th></tr></thead><tbody><tr><td>EBS</td><td>120</td><td>117</td><td>97.5</td></tr><tr><td>EC2</td><td>119</td><td>117</td><td>98.32</td></tr><tr><td>EFS</td><td>96</td><td>95</td><td>98.96</td></tr><tr><td>RDS</td><td>205</td><td>200</td><td>97.56</td></tr></tbody></table>
+<h3>Unsuccessful jobs (first 25)</h3>
+<table><thead><tr><th>Created</th><th>Type</th><th>Resource</th><th>State</th><th>Message</th></tr></thead><tbody><tr><td>2026-07-08T01:00:00+00:00</td><td>RDS</td><td>arn:aws:rds:eu-west-1:111122223333:res/23</td><td>EXPIRED</td><td>Snapshot quota exceeded</td></tr><tr><td>2026-07-11T01:00:00+00:00</td><td>RDS</td><td>arn:aws:rds:eu-west-1:111122223333:res/34</td><td>EXPIRED</td><td>Snapshot quota exceeded</td></tr><tr><td>2026-09-16T01:00:00+00:00</td><td>EBS</td><td>arn:aws:ebs:eu-west-1:111122223333:res/39</td><td>EXPIRED</td><td>Snapshot quota exceeded</td></tr><tr><td>2026-09-26T01:00:00+00:00</td><td>EBS</td><td>arn:aws:ebs:eu-west-1:111122223333:res/25</td><td>EXPIRED</td><td>Snapshot quota exceeded</td></tr><tr><td>2026-07-02T01:00:00+00:00</td><td>RDS</td><td>arn:aws:rds:eu-west-1:111122223333:res/29</td><td>EXPIRED</td><td>Snapshot quota exceeded</td></tr><tr><td>2026-09-27T01:00:00+00:00</td><td>RDS</td><td>arn:aws:rds:eu-west-1:111122223333:res/2</td><td>EXPIRED</td><td>Snapshot quota exceeded</td></tr><tr><td>2026-07-06T01:00:00+00:00</td><td>EC2</td><td>arn:aws:ec2:eu-west-1:111122223333:res/9</td><td>FAILED</td><td>Snapshot quota exceeded</td></tr><tr><td>2026-08-16T01:00:00+00:00</td><td>EFS</td><td>arn:aws:efs:eu-west-1:111122223333:res/19</td><td>EXPIRED</td><td>Snapshot quota exceeded</td></tr><tr><td>2026-09-25T01:00:00+00:00</td><td>EC2</td><td>arn:aws:ec2:eu-west-1:111122223333:res/16</td><td>EXPIRED</td><td>Snapshot quota exceeded</td></tr><tr><td>2026-07-16T01:00:00+00:00</td><td>RDS</td><td>arn:aws:rds:eu-west-1:111122223333:res/35</td><td>FAILED</td><td>Snapshot quota exceeded</td></tr><tr><td>2026-08-23T01:00:00+00:00</td><td>EBS</td><td>arn:aws:ebs:eu-west-1:111122223333:res/2</td><td>EXPIRED</td><td>Snapshot quota exceeded</td></tr></tbody></table>
+
+<h2>2. EC2 CPU utilisation (hourly averages)</h2>
+<table><thead><tr><th>Instance</th><th>Name</th><th>Type</th><th>State</th><th>Avg %</th><th>p95 %</th><th>Max %</th></tr></thead><tbody><tr><td>i-0abc0000</td><td>web-01</td><td>t3.large</td><td>running</td><td>34.73</td><td>59.8</td><td>86.54</td></tr><tr><td>i-0abc0001</td><td>web-02</td><td>t3.large</td><td>running</td><td>33.2</td><td>58.18</td><td>81.97</td></tr><tr><td>i-0abc0002</td><td>api-01</td><td>t3.large</td><td>running</td><td>62.12</td><td>93.23</td><td>100.0</td></tr><tr><td>i-0abc0003</td><td>batch-01</td><td>t3.large</td><td>running</td><td>68.96</td><td>100.0</td><td>100.0</td></tr><tr><td>i-0abc0004</td><td>bastion</td><td>t3.large</td><td>running</td><td>2.0</td><td>3.62</td><td>4.95</td></tr><tr><td>i-0abc0005</td><td>reporting</td><td>t3.large</td><td>running</td><td>4.02</td><td>7.34</td><td>10.7</td></tr><tr><td>i-0abc0006</td><td>wazuh-manager</td><td>t3.large</td><td>running</td><td>54.9</td><td>80.11</td><td>100.0</td></tr><tr><td>i-0abc0007</td><td>ci-runner</td><td>t3.large</td><td>running</td><td>24.73</td><td>71.71</td><td>100.0</td></tr></tbody></table>
+
+<h2>3. RDS utilisation</h2>
+<table><thead><tr><th>DB instance</th><th>Engine</th><th>Class</th><th>CPU avg %</th><th>CPU p95 %</th><th>Max conns</th><th>Peak storage %</th><th>Backup days</th><th>Encrypted</th></tr></thead><tbody><tr><td>orders-prod</td><td>postgres 16.4</td><td>db.r6g.large</td><td>41.2</td><td>77.9</td><td>212.0</td><td>83.4</td><td>14</td><td>True</td></tr><tr><td>cms-mariadb</td><td>mariadb 10.11</td><td>db.t4g.medium</td><td>12.5</td><td>30.1</td><td>41.0</td><td>38.0</td><td>3</td><td>True</td></tr></tbody></table>
+
+<p class="muted">Raw evidence is attached as CSV. Integrity: see <code>manifest.sha256</code>.
+Utilisation is computed from CloudWatch 1-hour average datapoints. Instances terminated before the
+report ran are not listed.</p>
+</body></html>
